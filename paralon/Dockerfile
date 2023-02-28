@@ -10,7 +10,9 @@ WORKDIR /data
 #       - transit_table
 #       - output_table
 
-COPY top_songs.csv .
+COPY puller .
+
+COPY ./puller pull-down
 
 ENV DATA_FORMAT=FILE
 
@@ -21,6 +23,8 @@ COPY requirements.txt .
 RUN apt -y update
 
 RUN apt -y install python3 python3-pip
+
+RUN python3 -m pip install Cython
 
 RUN python3 -m pip install --no-cache-dir -r requirements.txt
 
