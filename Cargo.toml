@@ -6,5 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+containerd-client = "0.2.0"
+rs-docker = "0.0.60"
 rust-s3 = "0.32"
 tokio = { version = "1", features = ["full"] }

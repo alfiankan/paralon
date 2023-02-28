@@ -1,18 +1,8 @@
-FROM ubuntu:18.04
+FROM ubuntu:focal
 
 WORKDIR /data
-# option [file, table[sqlite, postgree]]
 
-# get data from storage
-#       - transit_file
 
-# create optional use SQL (import transit file if data tabular to table with auto colomn detect)
-#       - transit_table
-#       - output_table
-
-COPY puller .
-
-COPY ./puller pull-down
 
 ENV DATA_FORMAT=FILE
 
@@ -22,11 +12,24 @@ COPY requirements.txt .
 
 RUN apt -y update
 
-RUN apt -y install python3 python3-pip
+RUN apt -y install python3 python3-pip openssl
 
 RUN python3 -m pip install Cython
 
 RUN python3 -m pip install --no-cache-dir -r requirements.txt
+
+
+# option [file, table[sqlite, postgree]]
+
+# get data from storage
+#       - transit_file
+
+# create optional use SQL (import transit file if data tabular to table with auto colomn detect)
+#       - transit_table
+#       - output_table
+
+
+COPY puller .
 
 # run some process to data ====start
 
@@ -44,8 +47,12 @@ RUN python3 -m pip install --no-cache-dir -r requirements.txt
 
 COPY pipe.py .
 
-RUN python3 pipe.py
+#RUN python3 pipe.py
 
 ## send file back to storage as temp_data format
 
-ENTRYPOINT ["ls", "-l"]
+COPY entry.sh /entry.sh
+
+RUN chmod +x /entry.sh
+
+ENTRYPOINT ["/entry.sh"]
