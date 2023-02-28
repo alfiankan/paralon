@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM ubuntu:18.04
 
 WORKDIR /data
 # option [file, table[sqlite, postgree]]
@@ -10,19 +10,19 @@ WORKDIR /data
 #       - transit_table
 #       - output_table
 
-COPY country_polution.csv .
+COPY top_songs.csv .
 
 ENV DATA_FORMAT=FILE
 
 # install dependecies
-ENV PYTHONUNBUFFERED=1
-RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
-RUN python3 -m ensurepip
-RUN pip3 install --no-cache --upgrade pip setuptools
 
-COPY deps.txt .
+COPY requirements.txt .
 
-RUN pip install -r deps.txt
+RUN apt -y update
+
+RUN apt -y install python3 python3-pip
+
+RUN python3 -m pip install --no-cache-dir -r requirements.txt
 
 # run some process to data ====start
 
@@ -38,5 +38,10 @@ RUN pip install -r deps.txt
 
 # run some process to data ====end
 
+COPY pipe.py .
 
-ENTRYPOINT ["sleep", "500000"]
+RUN python3 pipe.py
+
+## send file back to storage as temp_data format
+
+ENTRYPOINT ["ls", "-l"]
