@@ -30,6 +30,6 @@ docker run -d -e MINIO_BUCKET_NAME=paralon \
 -e MINIO_SECURITY_TOKEN="" \
 -e MINIO_SESSION_TOKEN="" \
 -e MINIO_PROFILE="" \
--e MINIO_FILE_TARGET=top-songs.csv \
--e MINIO_FILE_OUTPUT_TARGET=top-songs-transit.csv \
+-e MINIO_FILE_NAME=top-songs.csv \
+-e MINIO_FILE_OUT_NAME=top-songs-transit.csv \
 --network paralon_paralon paralon
